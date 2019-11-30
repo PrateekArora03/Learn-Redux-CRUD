@@ -6,8 +6,8 @@ const User = require("../models/User");
 // list all users
 router.get("/", async (req, res) => {
   try {
-    const user = await User.find({});
-    res.status(200).json({ status: true, user });
+    const users = await User.find({});
+    res.status(200).json({ status: true, users });
   } catch (error) {
     res.status(400).json({ status: false, error, message: "user not found" });
   }
@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
       throw new Error("Email or Password not found!");
     }
     const user = await User.create(req.body);
-    res.status(201).json({ status: true, message: "user created" });
+    res.status(201).json({ status: true, message: "user created", user });
   } catch (error) {
     res.status(400).json({ status: false, error, message: "user not created" });
   }
@@ -34,7 +34,7 @@ router.put("/:id", async (req, res) => {
     const user = await User.findOneAndUpdate({ _id: id }, req.body, {
       new: true
     });
-    res.status(202).json({ status: true, message: "user updated" });
+    res.status(202).json({ status: true, message: "user updated", user });
   } catch (error) {
     res.status(400).json({ status: false, error, message: "user not updated" });
   }

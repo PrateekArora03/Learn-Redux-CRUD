@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const path = require("path");
 const logger = require("morgan");
 
+const indexRouter = require("./routes/index");
+const userRouter = require("./routes/users");
+
 const app = express();
 
 // view engine setup
@@ -30,12 +33,10 @@ if (process.env.NODE_ENV === "development") {
 }
 
 mongoose.connect(
-  'mongodb://localhost/myapp',
+  "mongodb://localhost/myapp",
   { useUnifiedTopology: true, useNewUrlParser: true },
   function(err) {
-    if (err) {
-      console.log(err);
-    }
+    err ? console.log(err) : console.log("connected to DB");
   }
 );
 
@@ -43,6 +44,8 @@ mongoose.set("useCreateIndex", true);
 
 //Routers
 
+app.use("/api/v1/users", userRouter);
+app.use("/", indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res) {
